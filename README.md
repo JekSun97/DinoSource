@@ -37,7 +37,7 @@ This language is useful for supporting **modding in games**, implementation in g
 | **Comments** | `//` one-line, `/* */` multi-line |
 | **Data types** | `int`, `float`, `bool`, `string`, `var` (dynamic), `void` |
 | **Constants** | `const type NAME = value` |
-| **Arrays** | One-dimensional `[1,2,3]` and multidimensional `[[1,2],[3,4]]` |
+| **Arrays** | One-dimensional `[1,2,3]` and multidimensional `[[1,2][3,4]]` |
 | **Operators** | `+ - * / %` (arithmetic), `&& \|\| !` (logics) |
 | **Enum** | Named constants `enum Status { Idle, Running = 32, Jump = 4 }` |
 | **Functions** | With return types, parameters, recursion |
@@ -45,6 +45,7 @@ This language is useful for supporting **modding in games**, implementation in g
 | **Conditions** | `if/else`, `switch/case/default` |
 | **Cycles** | `for`, `while`, `repeat(n)`, `jump/POINT` |
 | **Control** | `return`, `break`, `continue`, `delete` |
+| **Library** | `include Path/SourceCode` |
 
 ### 🔧 Integration
 
@@ -143,6 +144,8 @@ string check(var _arr) {
 print("arr: " + check(array));
 ```
 
+> 📃 Here you can find a large snippet of **DinoSource** code for study - [Test Сode](https://github.com/JekSun97/DinoSource/discussions/1).
+
 ---
 
 ## 🔌 Integration with Godot
@@ -201,3 +204,9 @@ Any contributions are welcome! 🙌
 Developing DinoSource is a hobby project, and your support is greatly appreciated! 🙏
 
 [![Ko-Fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/jeksun)
+
+---
+
+Use at your own risk, the language may have hidden problems that I may not have yet discovered, you can create a [topic](https://github.com/JekSun97/DinoSource/issues) in the problems section, or contribute a fix.
+
+The language was originally developed for a gaming project where most of the gameplay - is programming.
