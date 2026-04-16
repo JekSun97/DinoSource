@@ -144,6 +144,7 @@ string check(var _arr) {
 print("arr: " + check(array));
 ```
 
+
 > 📃 Here you can find a large snippet of **DinoSource** code for study - [Test Сode](https://github.com/JekSun97/DinoSource/discussions/1).
 
 ---
@@ -207,6 +208,6 @@ Developing DinoSource is a hobby project, and your support is greatly appreciate
 
 ---
 
-Use at your own risk, the language may have hidden problems that I may not have yet discovered, you can create a [topic](https://github.com/JekSun97/DinoSource/issues) in the problems section, or contribute a fix.
+> ⚠️ Use at your own risk, the language may have hidden problems that I may not have yet discovered, you can create a [topic](https://github.com/JekSun97/DinoSource/issues) in the problems section, or contribute a fix.
 
 The language was originally developed for a gaming project where most of the gameplay - is programming.
