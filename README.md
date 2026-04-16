@@ -18,11 +18,9 @@ This language is useful for supporting **modding in games**, implementation in g
 - [✨ Features](#-features)
 - [🚀 Quick start](#-quick-start)
 - [📚 Code examples](#-code-examples)
-- [🏗️ Архитектура](#️-архитектура)
 - [🔌 Integration with Godot](#-integration-with-godot)
 - [🤝 Participation in development](#-participation-in-development)
-- [💖 Поддержать проект](#-поддержать-проект)
-- [📜 Лицензия](#-лицензия)
+- [💖 Support the project](#-support-the-project)
 
 ---
 
@@ -80,7 +78,7 @@ string msg = "DinoSource is working!";
 print(msg + " x=" + str(x) + ", y=" + str(y));
 ```
 
-### 4. Запусти! 🎮
+### 4. Launch! 🎮
 - Click **Run** in the interface
 - See the console output
 
@@ -170,7 +168,7 @@ godot_log("Greetings from DinoSource!");  // Calls a GDScript function
 
 ### Calling the DinoSource script from GDScript
 ```GDScript
-# Запуск кода
+# Running the code
 var ast = parser.parse(lexer.LexerRun("int nmb = 16; print('Hello'); int DinoFunc(int a, int b) {return a+b;}"))
 interpreter.run(ast)
 
