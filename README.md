@@ -209,5 +209,6 @@ Developing DinoSource is a hobby project, and your support is greatly appreciate
 ---
 
 > ⚠️ Use at your own risk, the language may have hidden problems that I may not have yet discovered, you can create a [topic](https://github.com/JekSun97/DinoSource/issues) in the problems section, or contribute a fix.
+Here you can see a [list](https://github.com/JekSun97/DinoSource/issues/2) of upcoming improvements and their priority.
 
-The language was originally developed for a gaming project where most of the gameplay - is programming.
+The language was originally developed for a gaming project where most of the gameplay - is programming 💻.
