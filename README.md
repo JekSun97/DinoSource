@@ -45,7 +45,8 @@ This language is useful for supporting **modding in games**, implementation in g
 | **Conditions** | `if/else`, `switch/case/default` |
 | **Cycles** | `for`, `while`, `repeat(n)`, `jump/POINT` |
 | **Control** | `return`, `break`, `continue`, `delete` |
-| **Library** | `include Path/SourceCode` |
+| **Library** | `include Path/SourceCode`, a basic **Math** library written in DinoSource |
+
 
 ### 🔧 Integration
 
