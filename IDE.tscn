@@ -1,0 +1,267 @@
+[gd_scene format=3 uid="uid://cbm012ft54d76"]
+
+[ext_resource type="Texture2D" uid="uid://bm26fcxbmkd2m" path="res://DinoSource/Logo/logo.png" id="1_8ekb1"]
+
+[sub_resource type="GDScript" id="GDScript_gfa64"]
+resource_name = "IDE"
+script/source = "extends Node
+@onready var codeEdit = $Control/HSplitContainer/VSplitContainer/CodeEdit as CodeEdit
+@onready var output = $Control/HSplitContainer/VSplitContainer/Output
+
+@onready var VarDbgPanel = $Control/HSplitContainer/DebugPanels/VarScroll/VBoxContainer
+@onready var FuncDbgPanel = $Control/HSplitContainer/DebugPanels/FuncScroll/VBoxContainer
+
+var preprocessor: DSPreprocessor = null
+var lexer: DSLexer = null
+var parser: DSParser = null
+var interpreter: DSInterpreter = null
+var script_dir = get_script().resource_path.get_base_dir()
+var code = \"\"
+
+func _ready() -> void:
+	preprocessor = DSPreprocessor.new()
+	lexer = DSLexer.new()
+	interpreter = DSInterpreter.new()
+	interpreter.registerNativeFunc(\"print\",PrintIDE)
+	codeEdit.syntax_highlighter = _SyntaxInit()
+	pass
+
+
+func PrintIDE (tx):
+	if output.text.is_empty():
+		output.text = str(tx)
+	else:
+		output.text = output.text+\"\\n\"+str(tx)
+	pass
+
+
+func _on_run_btn_pressed() -> void:
+	output.text = \"\"
+	PrintIDE(\"==========◀DinoSource RUN▶==========\")
+	code = codeEdit.text
+	print(\"CODE:\\n\"+code)
+	var clear_code = preprocessor.process(code,script_dir)
+	print(\"\\nPREPROCESSOR:\\n\"+str(clear_code))
+	var tokens = lexer.LexerRun(clear_code)
+	print(\"\\nTOKENS:\\n\"+str(tokens))
+	parser = DSParser.new(tokens)
+	parser.source_code = code
+	var ast = parser.parse()
+	print(\"\\nAST:\\n\"+str(ast))
+	interpreter.source_code = code
+	var start_time = Time.get_ticks_msec()
+	interpreter.run(ast)
+	var execution_time_ms = Time.get_ticks_msec() - start_time
+	PrintIDE(\"========== END PROGRAMM ==========\")
+	PrintIDE(\"⏱️ Execution time: %d ms\" % execution_time_ms)
+	_Debug()
+	pass # Replace with function body.
+
+
+func _SyntaxInit() -> CodeHighlighter:
+	var syntx = CodeHighlighter.new()
+	syntx.add_color_region(\"/*\",\"*/\",Color.DARK_GREEN)
+	syntx.add_color_region(\"//\",\"\",Color.DARK_GREEN,true)
+	syntx.add_color_region(\"\\\"\",\"\\\"\",Color.BLUE)
+	syntx.add_color_region(\"'\",\"'\",Color.BLUE)
+	syntx.add_keyword_color(\"true\",Color.BLUE)
+	syntx.add_keyword_color(\"false\",Color.BLUE)
+	syntx.add_keyword_color(\"int\",Color.BLUE)
+	syntx.add_keyword_color(\"float\",Color.BLUE)
+	syntx.add_keyword_color(\"bool\",Color.BLUE)
+	syntx.add_keyword_color(\"string\",Color.BLUE)
+	syntx.add_keyword_color(\"var\",Color.BLUE)
+	syntx.add_keyword_color(\"const\",Color.BLUE)
+	syntx.add_keyword_color(\"void\",Color.BLUE)
+	syntx.add_keyword_color(\"enum\",Color.BLUE)
+	syntx.add_keyword_color(\"class\",Color.BLUE)
+	syntx.add_keyword_color(\"new\",Color.BLUE)
+	syntx.add_keyword_color(\"this\",Color.BLUE)
+	syntx.add_keyword_color(\"delete\",Color.BLUE)
+	syntx.add_keyword_color(\"POINT\",Color.BLUE)
+	syntx.add_keyword_color(\"JMP\",Color.BLUE)
+	syntx.add_keyword_color(\"and\",Color.BLUE)
+	syntx.add_keyword_color(\"or\",Color.BLUE)
+	syntx.add_keyword_color(\"if\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"while\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"repeat\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"case\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"switch\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"default\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"break\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"continue\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"else\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"return\",Color.BLUE_VIOLET)
+	syntx.add_keyword_color(\"include\",Color.BLUE_VIOLET)
+	syntx.function_color = Color.BLUE_VIOLET
+	syntx.number_color = Color.BLUE
+	return syntx
+	pass
+
+
+func _Debug():
+	for i in VarDbgPanel.get_children():
+		i.queue_free()
+	for i in FuncDbgPanel.get_children():
+		i.queue_free()
+	var vars = interpreter.getDebugVariables()
+	var funcs = interpreter.getDebugFunctions()
+	for v in vars:
+		var pnl = preload(\"res://DinoSource/IDE/Panels/var_panel_debug.tscn\").instantiate()
+		var nm = pnl.get_node(\"VarName/LineEdit\") as LineEdit
+		var _is = pnl.get_node(\"Is/LineEdit\") as LineEdit
+		var val = pnl.get_node(\"Value/LineEdit\") as LineEdit
+		var type = pnl.get_node(\"Type/LineEdit\") as LineEdit
+		nm.text = v.name
+		_is.text = \"const\" if v.is_const else \"var\"
+		val.text = str(v.value)
+		type.text = v.type
+		VarDbgPanel.add_child(pnl)
+		#var const_mark = \"const\" if v.is_const else \"var\"
+		#var array_info = \"\"
+		#if v.array_type != null:
+			#array_info = \" [%s] size=%d\" % [v.array_type, v.array_size]
+		#PrintIDE(\"%s%s: %s = %s%s\" % [const_mark, v.type, v.name, str(v.value), array_info])
+	
+	for f in funcs:
+		var pnl = preload(\"res://DinoSource/IDE/Panels/func_panel_debug.tscn\").instantiate()
+		var nm = pnl.get_node(\"VarName/LineEdit\") as LineEdit
+		var nat = pnl.get_node(\"Native/LineEdit\") as LineEdit
+		var arg = pnl.get_node(\"Arg_cnt/LineEdit\") as LineEdit
+		var ret = pnl.get_node(\"Ret/LineEdit\") as LineEdit
+		nm.text = f.name
+		nat.text = \"YES\" if f.is_native else \"NO\"
+		arg.text = str(f.param_count)
+		ret.text = f.return_type
+		FuncDbgPanel.add_child(pnl)
+	pass
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gfa64"]
+bg_color = Color(0.5982933, 0.79, 0.3476, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5y3en"]
+bg_color = Color(0.92099476, 0.9209946, 0.9209946, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+shadow_size = 3
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ekb1"]
+bg_color = Color(0.6830772, 0.6830774, 0.6830771, 1)
+
+[node name="IDE" type="Node" unique_id=814177645]
+script = SubResource("GDScript_gfa64")
+
+[node name="Control" type="Control" parent="." unique_id=1838510854]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control" unique_id=311635511]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gfa64")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/Panel" unique_id=759029407]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control/Panel/HBoxContainer" unique_id=68852820]
+layout_mode = 2
+texture = ExtResource("1_8ekb1")
+expand_mode = 2
+
+[node name="run_btn" type="Button" parent="Control/Panel/HBoxContainer" unique_id=2031458634]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.54901963)
+text = "RUN"
+flat = true
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Control" unique_id=1049510978]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offsets = PackedInt32Array(906)
+split_offset = 906
+
+[node name="VSplitContainer" type="VSplitContainer" parent="Control/HSplitContainer" unique_id=497824008]
+layout_mode = 2
+split_offsets = PackedInt32Array(450)
+split_offset = 450
+
+[node name="CodeEdit" type="CodeEdit" parent="Control/HSplitContainer/VSplitContainer" unique_id=411898720]
+layout_mode = 2
+theme_override_colors/caret_color = Color(0.57400465, 0.7540226, 7.70092e-07, 1)
+theme_override_colors/selection_color = Color(0.36862746, 0.57254905, 0, 0.65882355)
+theme_override_colors/font_color = Color(0.2665748, 0.2665754, 0.26657495, 1)
+theme_override_colors/font_outline_color = Color(8.607256, 8.607256, 8.607256, 1)
+theme_override_colors/current_line_color = Color(0.49411765, 0.7254902, 0, 0.18039216)
+theme_override_constants/caret_width = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/line_spacing = -1
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_5y3en")
+theme_override_colors/line_number_color = Color(0.15487617, 0.15487593, 0.15487596, 0.4)
+text = "// Place the code here"
+indent_wrapped_lines = true
+scroll_smooth = true
+minimap_draw = true
+highlight_current_line = true
+gutters_draw_breakpoints_gutter = true
+gutters_draw_line_numbers = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+auto_brace_completion_pairs = {
+"\"": "\"",
+"'": "'",
+"(": ")",
+"/*": "*/",
+"[": "]",
+"{": "}"
+}
+
+[node name="Output" type="TextEdit" parent="Control/HSplitContainer/VSplitContainer" unique_id=1702147872]
+layout_mode = 2
+text = "==========DinoSource IDE=========="
+emoji_menu_enabled = false
+
+[node name="DebugPanels" type="VSplitContainer" parent="Control/HSplitContainer" unique_id=416917101]
+layout_mode = 2
+theme_override_styles/split_bar_background = SubResource("StyleBoxFlat_8ekb1")
+split_offsets = PackedInt32Array(301, 0)
+split_offset = 301
+
+[node name="VarScroll" type="ScrollContainer" parent="Control/HSplitContainer/DebugPanels" unique_id=2093367583]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HSplitContainer/DebugPanels/VarScroll" unique_id=643822175]
+layout_mode = 2
+
+[node name="FuncScroll" type="ScrollContainer" parent="Control/HSplitContainer/DebugPanels" unique_id=700999378]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HSplitContainer/DebugPanels/FuncScroll" unique_id=624155523]
+layout_mode = 2
+
+[connection signal="pressed" from="Control/Panel/HBoxContainer/run_btn" to="." method="_on_run_btn_pressed"]

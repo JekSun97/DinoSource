@@ -1,0 +1,31 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="DinoSource"
+config/description="Author: Артём Божко (JekSun97)"
+config/version="0.8"
+run/main_scene="uid://cbm012ft54d76"
+config/features=PackedStringArray("4.6", "GL Compatibility")
+boot_splash/bg_color=Color(0.72464263, 0.7246426, 0.7246426, 1)
+boot_splash/image="uid://bm26fcxbmkd2m"
+config/icon="uid://bm26fcxbmkd2m"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.98234254, 0.9823423, 0.9823424, 1)

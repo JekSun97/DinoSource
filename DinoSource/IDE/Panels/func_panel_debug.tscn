@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://bu5ri37jl62tr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsh37"]
+bg_color = Color(0.36862746, 0.5411765, 0, 0.6745098)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 5
+shadow_offset = Vector2(1.325, 0.515)
+
+[node name="VarPanelDebug" type="Panel" unique_id=1111052499]
+custom_minimum_size = Vector2(219.83, 144.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_jsh37")
+
+[node name="VarName" type="Label" parent="." unique_id=394574597]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 4.0
+offset_top = 8.0
+offset_right = -3.8300018
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "Name:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="VarName" unique_id=326168352]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Name"
+editable = false
+
+[node name="Native" type="Label" parent="." unique_id=1344295282]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 4.0
+offset_top = 46.0
+offset_right = -3.8300018
+offset_bottom = 69.0
+grow_horizontal = 2
+text = "Native:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Native" unique_id=655060044]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Var"
+editable = false
+
+[node name="Arg_cnt" type="Label" parent="." unique_id=1220233220]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 4.0
+offset_top = 80.0
+offset_right = -3.8300018
+offset_bottom = 103.0
+grow_horizontal = 2
+text = "ArgCnt:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Arg_cnt" unique_id=1680372770]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "8"
+editable = false
+
+[node name="Ret" type="Label" parent="." unique_id=1354852628]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 4.0
+offset_top = 113.0
+offset_right = -3.8300018
+offset_bottom = 136.0
+grow_horizontal = 2
+text = "RetType:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Ret" unique_id=1917273574]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 68.0
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "RetType"
+editable = false

@@ -1,0 +1,160 @@
+/*
+------------------------------------------------
+			DinoSource Test Code
+------------------------------------------------
+*/
+include DinoSource/Library/Math
+
+const float PI = 3.14159265;
+//PI = 5.7; // ERROR
+int i; //Index for While. Default is 0
+bool run = !false; // !false = true
+var arr = ["One",2,3,4,5,6,8 - 1,false,9,"10!"];
+var double_arr = [ [13,8,64] [true,false] ];
+string text = "Hello " + str(2020+6) + "!";
+var any_type = "DinoSource"; // var = string, bool, int, float or array
+
+enum Mode
+{
+	Play, // 0
+	Pause, // 1
+	Resume = 8,
+	Stop = 64
+}
+
+print(Math.clamp(15,0,10)); //Function from the Math library
+print("Enum Pause is: "+str(Mode.Pause));
+print("double_arr[0] = "+str(double_arr[0]));
+print("double_arr[1] = "+str(double_arr[1]));
+print("double_arr[0][2] = " + str(double_arr[0][2]) ); //64
+
+int plus (int a,int b)
+{
+	int ret = a + b;
+	print(str(a)+" + "+str(b)+" = "+str(ret));
+	return ret;
+}
+int ret_func = plus(1,2);
+
+string operation_func (int mode,int a,int b)
+{
+	if (mode==0)
+	{
+		return "POW Mode: "+str(a)+"*"+str(b)+" = "+str(a*b);
+	}
+	else if (mode==1)
+	{
+		return "DIV Mode: "+str(a)+"/"+str(b)+" = "+str(a/b);
+	}
+	else
+	{
+		return "Other";
+	}
+}
+print(operation_func(1,4,2));
+
+void _PRINT(string t1, string t2) 
+{
+	print(str(t1)+" "+str(t2));
+}
+
+_PRINT("Hello ","DinoSource!");
+
+var _array = [16, 86, 1024];
+
+int arr_func (var _arr, int index)
+{
+return _arr[index];
+}
+print("Array[2] = " + str(arr_func(_array, 2)));
+
+var untyped_func (var any_type)
+{
+	if (type(any_type)=="int") {return 101;}
+	else if (type(any_type)=="bool") {return false;}
+	else if (type(any_type)=="string") {return "This string!";}
+	else {return 0;}
+}
+var _type = untyped_func("Hi!" /* Supports int, float, string, bool, or array type*/ );
+print("untyped_func return: "+str(_type)+" | Type Var: "+type(_type));
+
+class Player 
+{
+string name;
+int age;
+void Player(string n) { this.name = n; } //Construct
+void Say(string tx) {print(this.name+": "+tx);}
+}
+
+Player createPlayer(string n)
+{
+Player _pl = new Player(n);
+_pl.age = 18;
+return _pl;
+}
+
+Player p = createPlayer("Artem");
+print(p.name);
+print(p.age);
+p.Say("Hello World!");
+
+
+while (run && i<4)
+{
+	print("While: "+str(i));
+	i+=1;
+}
+if (!run) {print("While disabled!.");}
+
+for(int i = 0; i < 1000; i++)
+{
+	if (i==10) {break;} // End FOR
+	else if (i==4)
+	{
+		print("SKIP "+str(i) +" IN FOR");
+		continue;
+	}
+	else if (i==8) {print("FOR is "+str(i));}
+	
+	print("FOR: "+str(i));
+	print("Array["+str(i)+"] = "+str( arr[i] ));
+}
+
+int num_call = 3;
+repeat (num_call) // Repeat the block 3 times
+{
+	print("Repeat BLOCK");
+	int _not_global_var = 4;
+	_not_global_var += ((4/2) - 1) * 3; // = 7
+	_not_global_var--; // = 6
+	print(_not_global_var);
+}
+
+delete num_call; // DELETE VAR
+
+int JMP_cnt = 4; 
+POINT my_point; // <- Save point
+JMP_cnt--;
+if (JMP_cnt > 0)
+{
+	print("JUMP - "+str(JMP_cnt));
+	if (JMP_cnt==2) {print("JMP_cnt is 2!");}
+	JMP my_point; // Jump to the point
+}
+print("END JUMP.");
+
+int sw = 3;
+switch (sw)
+{
+	case 1: print("CASE ONE"); break;
+	case 2,3: print("CASE TWO OR THREE"); break;
+	default: print("CASE OTHER"); break;
+}
+
+bool bl1 = false;
+bool bl2 = true;
+bool bl3 = true;
+if ((bl1 == true || bl2 == true) && bl3 and true) // ||/or, &&/and 
+{
+	print("UNLOCK!");
+}
