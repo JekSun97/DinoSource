@@ -181,7 +181,8 @@ interpreter.run(ast)
 var nmb = interpreter.getGlobalVar("nmb")
 
 # Function call
-interpreter.callFunc("DinoFunc", [4, 1])
+var ret = interpreter.callFunc("DinoFunc", [4, 1])
+print(ret) # 5
 ```
 
 ---
