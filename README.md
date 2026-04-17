@@ -1,7 +1,7 @@
 # DinoSource
 
 <p align="center">
-   <img src="logo_outlined.svg" width="400" alt="DinoSource logo">
+   <img src="DinoSource\Logo\logo2.png" width="400" alt="DinoSource logo">
 </p>
 
 [![Godot Engine](https://img.shields.io/badge/Godot-4.x-%23478cbf?logo=godot-engine&logoColor=white)](https://godotengine.org)
