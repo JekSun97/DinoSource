@@ -163,12 +163,13 @@ func _ready():
 func _godot_log(args: Array):
     if args.size() > 0:
         print("[DinoSource] " + str(args[0]))
-    return null
+    return 1
 ```
 
 ```DinoSource
 // In the DinoSource code:
 godot_log("Greetings from DinoSource!");  // Calls a GDScript function
+// Return 1 from GDScript
 ```
 
 ### Calling the DinoSource script from GDScript
