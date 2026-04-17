@@ -135,7 +135,7 @@ var array = [10, 20, "Hi!", false];
 
 string check(var _arr) {
 	string _text = "\n";
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < _arr.size(); i++) {
         _text = _text + "arr[" + str(i) + "] = " + str(_arr[i]) + "\n";
     }
     return _text;
